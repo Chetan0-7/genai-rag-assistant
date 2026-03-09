@@ -1,0 +1,22 @@
+[
+  {
+    "title": "Password Reset",
+    "content": "Users can reset their password from Settings > Security by clicking on 'Reset Password'. You will receive an email with instructions."
+  },
+  {
+    "title": "Account Creation",
+    "content": "Users can create an account by clicking the 'Sign Up' button on the main homepage. You need a valid email and a 8-character password."
+  },
+  {
+    "title": "API Rate Limits",
+    "content": "The standard API rate limit is 100 requests per minute. For enterprise users, the rate limit is upgraded to 1000 requests per minute."
+  },
+  {
+    "title": "Billing Cycle",
+    "content": "Invoices are generated on the 1st of every month. Payments are automatically deducted or due within 15 days of invoice generation."
+  },
+  {
+    "title": "Support Availability",
+    "content": "Customer support is available 24/7 for Enterprise users. For standard users, support operates from 9 AM to 5 PM EST, Monday through Friday."
+  }
+]
