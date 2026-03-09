@@ -14,8 +14,12 @@ app = Flask(__name__)
 
 # Initialize Gemini client. Depends on GEMINI_API_KEY environment variable.
 client = None
-if os.environ.get("GEMINI_API_KEY"):
-    client = genai.Client()
+api_key = os.environ.get("GEMINI_API_KEY")
+
+if api_key:
+    client = genai.Client(api_key=api_key)
+else:
+    print("WARNING: GEMINI_API_KEY not found in environment.")
 
 # In-memory vector database
 vector_db = []
@@ -101,6 +105,7 @@ def initialize_knowledge_base():
 
 # Initialize the DB gracefully in the background so it doesn't block Gunicorn boot
 if client:
+    print("Starting knowledge base initialization...")
     threading.Thread(target=initialize_knowledge_base, daemon=True).start()
 else:
     print("WARNING: GEMINI_API_KEY not found in environment. Please set it to enable RAG.")
