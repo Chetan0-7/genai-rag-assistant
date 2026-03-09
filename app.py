@@ -81,13 +81,23 @@ def find_similar_chunks(query_embedding, top_k=3):
 
 def initialize_knowledge_base():
     """Load docs.json, chunk them, and generate embeddings."""
-    if not os.path.exists("docs.json"):
-        print("docs.json not found. Skipping initialization.")
+
+    print("Initializing knowledge base...")
+
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    docs_path = os.path.join(base_dir, "docs.json")
+
+    print("Looking for docs.json at:", docs_path)
+
+    if not os.path.exists(docs_path):
+        print("docs.json NOT FOUND")
         return
-        
+
     try:
-        with open("docs.json", "r", encoding="utf-8") as f:
+        with open(docs_path, "r", encoding="utf-8") as f:
             docs = json.load(f)
+
+        print("Loaded docs:", len(docs))
             
         for doc in docs:
             text = f"Title: {doc.get('title', '')}\nContent: {doc.get('content', '')}"
