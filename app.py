@@ -1,5 +1,6 @@
 import os
 import json
+import threading
 import numpy as np
 from flask import Flask, request, jsonify, render_template
 from google import genai
@@ -98,11 +99,15 @@ def initialize_knowledge_base():
     except Exception as e:
         print(f"Failed to load docs.json: {e}")
 
-# Initialize the DB gracefully
+# Initialize the DB gracefully in the background so it doesn't block Gunicorn boot
 if client:
-    initialize_knowledge_base()
+    threading.Thread(target=initialize_knowledge_base, daemon=True).start()
 else:
     print("WARNING: GEMINI_API_KEY not found in environment. Please set it to enable RAG.")
+
+@app.route("/health")
+def health():
+    return jsonify({"status": "healthy", "chunks_loaded": len(vector_db)}), 200
 
 @app.route("/")
 def index():
@@ -180,4 +185,5 @@ def chat():
         return jsonify({"response": f"Error communicating with LLM: {str(e)}"}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(debug=True, host="0.0.0.0", port=port)
